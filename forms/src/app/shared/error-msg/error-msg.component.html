@@ -1,0 +1,10 @@
+<div *ngIf="errorMessage != null">
+  <span
+    class="glyphicon glyphicon-remove form-control-feedback"
+    aria-hidden="true"
+  ></span>
+  <span class="sr-only">(error)</span>
+  <div class="alert alert-danger errorDiv">
+    {{ errorMessage }}
+  </div>
+</div>
