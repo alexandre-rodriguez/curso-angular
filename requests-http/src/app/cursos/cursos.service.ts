@@ -1,16 +1,16 @@
+import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Curso } from './curso';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CursosService {
+  private readonly API = `${environment.API}cursos`;
 
-  private readonly  API = 'http://localhost:3000/cursos';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   list() {
     return this.http.get<Curso[]>(this.API);
