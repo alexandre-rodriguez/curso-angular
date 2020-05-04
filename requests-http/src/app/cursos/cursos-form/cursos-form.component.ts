@@ -25,32 +25,16 @@ export class CursosFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.criarFormulario();
+    const curso = this.route.snapshot.data.curso;
 
-    // this.route.params.subscribe((params: any) => {
-    //   const id = params['id'];
-    //   const curso$ = this.service.loadById(id);
-    //   curso$.subscribe((curso) => {
-    //     this.updateForm(curso);
-    //   });
-    // });
-
-    this.route.params.pipe(
-      map((params: any) => params.id),
-      switchMap(id => this.service.loadById(id))).subscribe(curso =>
-        this.updateForm(curso)
-      );
-
-    // concatMap -> ordem da requisção importa
-    // mergeMap -> ordem nao importa
-    // exhaustMap -> casos de login
+    this.criarFormulario(curso);
   }
 
-  private criarFormulario() {
+  private criarFormulario(curso) {
     this.form = this.fb.group({
-      id: [null],
+      id: [curso.id],
       nome: [
-        null,
+        curso.nome,
         [
           Validators.required,
           Validators.minLength(3),

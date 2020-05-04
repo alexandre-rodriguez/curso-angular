@@ -11,14 +11,14 @@ import { Curso } from './curso';
 export class CursosService {
   private readonly API = `${environment.API}cursos`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   list() {
     return this.http.get<Curso[]>(this.API);
   }
 
   loadById(id) {
-    return this.http.get(`${this.API}/${id}`).pipe(take(1));
+    return this.http.get<Curso>(`${this.API}/${id}`).pipe(take(1));
   }
 
   create(curso) {
