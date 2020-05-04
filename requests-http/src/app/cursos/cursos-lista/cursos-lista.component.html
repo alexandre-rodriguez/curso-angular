@@ -50,12 +50,7 @@
     </table>
 
     <ng-template #loadingError>
-      <div *ngIf="error$ | async; else loading">
-        Erro ao carregar cursos. Tente novamente mais tarde.
-      </div>
-      <ng-template #loading>
-        <span>Carregando Cursos...</span>
-      </ng-template>
+      <span>Carregando Cursos...</span>
     </ng-template>
   </div>
 </div>

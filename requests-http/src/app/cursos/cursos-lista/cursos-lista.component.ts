@@ -14,30 +14,28 @@ import { AlertModalService } from 'src/app/shared/alert-modal.service';
 })
 export class CursosListaComponent implements OnInit {
   cursos$: Observable<Curso[]>;
-  error$ = new Subject<boolean>();
 
   constructor(
     private service: CursosService,
     private alertService: AlertModalService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.onRefresh();
   }
 
-  onDeclineDelete() { }
+  onDeclineDelete() {}
 
-  onConfirmDelete() { }
+  onConfirmDelete() {}
 
-  onDelete(curso: Curso) { }
+  onDelete(curso: Curso) {}
 
-  onEdit(i: number) { }
+  onEdit(i: number) {}
 
   onRefresh() {
     this.cursos$ = this.service.list().pipe(
       catchError((error) => {
         console.error(error);
-        //this.error$.next(true);
         this.handleError();
         return empty();
       })
