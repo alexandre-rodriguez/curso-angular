@@ -1,3 +1,4 @@
+import { take } from 'rxjs/operators';
 import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -14,5 +15,9 @@ export class CursosService {
 
   list() {
     return this.http.get<Curso[]>(this.API);
+  }
+
+  create(curso) {
+    return this.http.post(this.API, curso).pipe(take(1));
   }
 }

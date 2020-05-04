@@ -4,27 +4,34 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 enum AlertTypes {
   DANGER = 'danger',
-  SUCCESS = 'success'
+  SUCCESS = 'success',
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AlertModalService {
-
-  constructor(private modalService: BsModalService) { }
+  constructor(private modalService: BsModalService) {}
 
   showAlertDanger(message: string) {
     this.showAlert(message, AlertTypes.DANGER);
   }
 
   showAlertSuccesso(message: string) {
-    this.showAlert(message, AlertTypes.SUCCESS);
+    this.showAlert(message, AlertTypes.SUCCESS, 3000);
   }
 
-  private showAlert(message: string, type: AlertTypes) {
+  private showAlert(
+    message: string,
+    type: AlertTypes,
+    dismissTimeout?: number
+  ) {
     const bsModalRef: BsModalRef = this.modalService.show(AlertModalComponent);
     bsModalRef.content.type = type;
     bsModalRef.content.message = message;
+
+    if (dismissTimeout) {
+      setTimeout(() => bsModalRef.hide(), dismissTimeout);
+    }
   }
 }
