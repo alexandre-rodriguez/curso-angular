@@ -5,6 +5,7 @@ import { Curso } from '../curso';
 import { Observable, empty, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AlertModalService } from 'src/app/shared/alert-modal.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cursos-lista',
@@ -17,7 +18,9 @@ export class CursosListaComponent implements OnInit {
 
   constructor(
     private service: CursosService,
-    private alertService: AlertModalService
+    private alertService: AlertModalService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -30,7 +33,9 @@ export class CursosListaComponent implements OnInit {
 
   onDelete(curso: Curso) {}
 
-  onEdit(i: number) {}
+  onEdit(id: number) {
+    this.router.navigate(['editar', id], { relativeTo: this.route });
+  }
 
   onRefresh() {
     this.cursos$ = this.service.list().pipe(
