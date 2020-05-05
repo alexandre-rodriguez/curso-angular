@@ -5,7 +5,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'cursos',
+    redirectTo: 'upload',
   },
   {
     path: 'cursos',
@@ -19,10 +19,15 @@ const routes: Routes = [
         (m) => m.UnsubscribeRxjsModule
       ),
   },
+  {
+    path: 'upload',
+    loadChildren: () =>
+      import('./upload-file/upload-file.module').then((m) => m.UploadFileModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
