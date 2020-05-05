@@ -1,5 +1,5 @@
 const express = require("express");
-const cors = require("cors");
+// const cors = require("cors");
 const bodyParser = require("body-parser");
 const multiplart = require("connect-multiparty");
 
@@ -8,12 +8,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extend: true }));
 
-const corsOptions = {
-  origin: "*",
-  optionsSucessStatus: 200,
-};
+// const corsOptions = {
+//   origin: "*",
+//   optionsSucessStatus: 200,
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 const multipartMiddleware = multiplart({ uploadDir: "./uploads" });
 app.post("/upload", multipartMiddleware, (req, res) => {
