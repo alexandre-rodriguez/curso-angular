@@ -11,6 +11,15 @@
       >Selecionar Arquivo</label
     >
   </div>
+  <div class="progress">
+    <div
+      class="progress-bar progress-bar-striped progress-bar-animated"
+      role="progressbar"
+      [style.width]="progress + '%'"
+    >
+      {{ progress }}%
+    </div>
+  </div>
 </div>
 <div style="margin-top: 10px;">
   <button
