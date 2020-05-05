@@ -1,3 +1,4 @@
+import { CrudService } from './../shared/crud-service';
 import { take } from 'rxjs/operators';
 import { environment } from './../../environments/environment.prod';
 import { Injectable } from '@angular/core';
@@ -8,37 +9,11 @@ import { Curso } from './curso';
 @Injectable({
   providedIn: 'root',
 })
-export class CursosService {
+export class CursosService extends CrudService<Curso> {
   private readonly API = `${environment.API}cursos`;
 
-  constructor(private http: HttpClient) { }
-
-  list() {
-    return this.http.get<Curso[]>(this.API);
+  constructor(protected http: HttpClient) {
+    super(http, `${environment.API}cursos`);
   }
 
-  loadById(id) {
-    return this.http.get<Curso>(`${this.API}/${id}`).pipe(take(1));
-  }
-
-  private create(curso) {
-    return this.http.post(this.API, curso).pipe(take(1));
-  }
-
-  private update(curso) {
-    return this.http.put(`${this.API}/${curso.id}`, curso).pipe(take(1));
-  }
-
-  save(curso) {
-    if (curso.id) {
-      return this.update(curso);
-    }
-
-    return this.create(curso);
-
-  }
-
-  remove(id) {
-    return this.http.delete(`${this.API}/${id}`).pipe(take(1));
-  }
 }
