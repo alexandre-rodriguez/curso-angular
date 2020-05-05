@@ -1,10 +1,9 @@
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { CursosService } from '../cursos.service';
 import { Curso } from '../curso';
-import { Observable, empty } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable, EMPTY } from 'rxjs';
+import { catchError, take, switchMap } from 'rxjs/operators';
 import { AlertModalService } from 'src/app/shared/alert-modal.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -17,10 +16,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class CursosListaComponent implements OnInit {
   cursos$: Observable<Curso[]>;
 
-  deleteModalRef: BsModalRef;
-
-  @ViewChild('deleteModal') deleteModal;
-
   cursoSelecionado: Curso;
 
   constructor(
@@ -28,35 +23,29 @@ export class CursosListaComponent implements OnInit {
     private alertService: AlertModalService,
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: BsModalService
   ) { }
 
   ngOnInit(): void {
     this.onRefresh();
   }
 
-  onDeclineDelete() {
-    this.deleteModalRef.hide();
-  }
-
-  onConfirmDelete() {
-    this.service.remove(this.cursoSelecionado.id).subscribe(
-      successo => {
-        this.deleteModalRef.hide();
-        this.onRefresh();
-        this.alertService.showAlertSuccesso('Curso removido com sucesso!');
-      },
-      error => {
-        this.deleteModalRef.hide();
-        this.alertService.showAlertDanger('Erro ao remover curso. Tente novamente mais tarde.');
-      }
-    );
-
-  }
-
   onDelete(curso: Curso) {
     this.cursoSelecionado = curso;
-    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-sm', ignoreBackdropClick: true });
+
+    const result$ = this.alertService.showConfirm('Confirmação', 'Tem certeza que desja remover esse curso?', 'Sim', 'Não');
+    result$.asObservable().pipe(
+      take(1),
+      switchMap(result => result ? this.service.remove(curso.id) : EMPTY)
+    )
+      .subscribe(
+        successo => {
+          this.onRefresh();
+          this.alertService.showAlertSuccesso('Curso removido com sucesso!');
+        },
+        error => {
+          this.alertService.showAlertDanger('Erro ao remover curso. Tente novamente mais tarde.');
+        }
+      );
   }
 
   onEdit(id: number) {
@@ -68,7 +57,7 @@ export class CursosListaComponent implements OnInit {
       catchError((error) => {
         console.error(error);
         this.handleError();
-        return empty();
+        return EMPTY;
       })
     );
   }
